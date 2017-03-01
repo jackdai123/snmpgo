@@ -19,9 +19,9 @@ import (
 
 type Security interface {
 	Identifier() string
-	GenerateRequestMessage(message) error
-	GenerateResponseMessage(message) error
-	ProcessIncomingMessage(message) error
+	GenerateRequestMessage(Message) error
+	GenerateResponseMessage(Message) error
+	ProcessIncomingMessage(Message) error
 	Discover(*SNMP) error
 	String() string
 }
@@ -34,7 +34,7 @@ func (c *community) Identifier() string {
 	return string(c.Community)
 }
 
-func (c *community) GenerateRequestMessage(sendMsg message) (err error) {
+func (c *community) GenerateRequestMessage(sendMsg Message) (err error) {
 	m := sendMsg.(*messageV1)
 	m.Community = c.Community
 
@@ -47,11 +47,11 @@ func (c *community) GenerateRequestMessage(sendMsg message) (err error) {
 	return
 }
 
-func (c *community) GenerateResponseMessage(sendMsg message) (err error) {
+func (c *community) GenerateResponseMessage(sendMsg Message) (err error) {
 	return c.GenerateRequestMessage(sendMsg)
 }
 
-func (c *community) ProcessIncomingMessage(recvMsg message) (err error) {
+func (c *community) ProcessIncomingMessage(recvMsg Message) (err error) {
 	rm := recvMsg.(*messageV1)
 
 	if !bytes.Equal(c.Community, rm.Community) {
@@ -132,7 +132,7 @@ func (u *usm) Identifier() string {
 	return id
 }
 
-func (u *usm) GenerateRequestMessage(sendMsg message) (err error) {
+func (u *usm) GenerateRequestMessage(sendMsg Message) (err error) {
 	// setup message
 	m := sendMsg.(*messageV3)
 
@@ -176,11 +176,11 @@ func (u *usm) GenerateRequestMessage(sendMsg message) (err error) {
 	return
 }
 
-func (u *usm) GenerateResponseMessage(sendMsg message) (err error) {
+func (u *usm) GenerateResponseMessage(sendMsg Message) (err error) {
 	return u.GenerateRequestMessage(sendMsg)
 }
 
-func (u *usm) ProcessIncomingMessage(recvMsg message) (err error) {
+func (u *usm) ProcessIncomingMessage(recvMsg Message) (err error) {
 	rm := recvMsg.(*messageV3)
 
 	// RFC3411 Section 5
@@ -648,7 +648,7 @@ func (m *SecurityMap) Set(sec Security) {
 	m.objs[sec.Identifier()] = sec
 }
 
-func (m *SecurityMap) Lookup(msg message) Security {
+func (m *SecurityMap) Lookup(msg Message) Security {
 	var id string
 	switch mm := msg.(type) {
 	case *messageV1:

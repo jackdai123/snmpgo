@@ -8,7 +8,7 @@ import (
 
 type transport interface {
 	Listen() (interface{}, error)
-	Read(interface{}, []byte) (int, net.Addr, message, error)
+	Read(interface{}, []byte) (int, net.Addr, Message, error)
 	Write(interface{}, []byte, net.Addr) error
 	Close(interface{}) error
 }
@@ -38,7 +38,7 @@ func (t *packetTransport) Listen() (interface{}, error) {
 	return c, err
 }
 
-func (t *packetTransport) Read(conn interface{}, buf []byte) (num int, src net.Addr, msg message, err error) {
+func (t *packetTransport) Read(conn interface{}, buf []byte) (num int, src net.Addr, msg Message, err error) {
 	c := conn.(net.PacketConn)
 	for {
 		num, src, err = c.ReadFrom(buf)

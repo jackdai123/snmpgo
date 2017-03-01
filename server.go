@@ -242,7 +242,7 @@ func (s *TrapServer) Close() error {
 }
 
 // handle a newly received trap
-func (s *TrapServer) handle(listener TrapListener, conn interface{}, msg message, src net.Addr, err error) {
+func (s *TrapServer) handle(listener TrapListener, conn interface{}, msg Message, src net.Addr, err error) {
 	defer func() {
 		if err := recover(); err != nil {
 			const size = 64 << 10
@@ -298,7 +298,7 @@ func (s *TrapServer) handle(listener TrapListener, conn interface{}, msg message
 }
 
 func (s *TrapServer) informResponse(
-	conn interface{}, src net.Addr, mp MessageProcessing, sec Security, msg message) error {
+	conn interface{}, src net.Addr, mp MessageProcessing, sec Security, msg Message) error {
 
 	respPdu := NewPduWithVarBinds(msg.Version(), GetResponse, msg.Pdu().VarBinds())
 	respMsg, err := mp.PrepareResponseMessage(sec, respPdu, msg)

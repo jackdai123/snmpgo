@@ -27,8 +27,8 @@ var UnmarshalMessage = UnmarshalMessage
 var NewMessageWithPdu = newMessageWithPdu
 var NewMessageProcessing = NewMessageProcessing
 
-func ToMessageV1(msg message) *messageV1 { return msg.(*messageV1) }
-func ToMessageV3(msg message) *messageV3 { return msg.(*messageV3) }
+func ToMessageV1(msg Message) *messageV1 { return msg.(*messageV1) }
+func ToMessageV3(msg Message) *messageV3 { return msg.(*messageV3) }
 func ToUsm(sec Security) *usm            { return sec.(*usm) }
 
 // For Security testing

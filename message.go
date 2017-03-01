@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type message interface {
+type Message interface {
 	Version() SNMPVersion
 	Pdu() Pdu
 	PduBytes() []byte
@@ -296,7 +296,7 @@ func (msg *messageV3) String() string {
 		msg.pdu.String())
 }
 
-func newMessage(ver SNMPVersion) (msg message) {
+func newMessage(ver SNMPVersion) (msg Message) {
 	switch ver {
 	case V1, V2c:
 		msg = newMessageWithPdu(ver, &PduV1{})
@@ -306,7 +306,7 @@ func newMessage(ver SNMPVersion) (msg message) {
 	return
 }
 
-func newMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg message) {
+func newMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg Message) {
 	m := messageV1{
 		version: ver,
 		pdu:     pdu,
@@ -323,7 +323,7 @@ func newMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg message) {
 	return
 }
 
-func UnmarshalMessage(b []byte) (message, []byte, error) {
+func UnmarshalMessage(b []byte) (Message, []byte, error) {
 	ver, rest, next, err := unmarshalMessageVersion(b)
 	if err != nil {
 		return nil, nil, err
@@ -355,7 +355,7 @@ func unmarshalMessageVersion(b []byte) (SNMPVersion, []byte, []byte, error) {
 	}
 	if raw.Class != classUniversal || raw.Tag != tagSequence || !raw.IsCompound {
 		return 0, nil, nil, asn1.StructuralError{fmt.Sprintf(
-			"Invalid message object - Class [%02x], Tag [%02x] : [%s]",
+			"Invalid Message object - Class [%02x], Tag [%02x] : [%s]",
 			raw.Class, raw.Tag, toHexStr(b, " "))}
 	}
 

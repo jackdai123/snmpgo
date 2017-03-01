@@ -17,7 +17,7 @@ func (e *snmpEngine) SendPdu(pdu Pdu, conn net.Conn, args *SNMPArguments) (resul
 		size = recvBufferSize
 	}
 
-	var sendMsg message
+	var sendMsg Message
 	sendMsg, err = e.mp.PrepareOutgoingMessage(e.sec, pdu, args)
 	if err != nil {
 		return
@@ -43,7 +43,7 @@ func (e *snmpEngine) SendPdu(pdu Pdu, conn net.Conn, args *SNMPArguments) (resul
 		return
 	}
 
-	var recvMsg message
+	var recvMsg Message
 	if recvMsg, _, err = UnmarshalMessage(buf); err != nil {
 		return nil, &MessageError{
 			Cause:   err,
