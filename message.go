@@ -323,7 +323,7 @@ func newMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg message) {
 	return
 }
 
-func unmarshalMessage(b []byte) (message, []byte, error) {
+func UnmarshalMessage(b []byte) (message, []byte, error) {
 	ver, rest, next, err := unmarshalMessageVersion(b)
 	if err != nil {
 		return nil, nil, err
