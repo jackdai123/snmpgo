@@ -607,7 +607,7 @@ func newSecurity(args *SNMPArguments) Security {
 	}
 }
 
-func newSecurityFromEntry(entry *SecurityEntry) Security {
+func NewSecurityFromEntry(entry *SecurityEntry) Security {
 	switch entry.Version {
 	case V1, V2c:
 		return &community{

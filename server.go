@@ -171,7 +171,7 @@ func (s *TrapServer) AddSecurity(entry *SecurityEntry) error {
 	if err := entry.validate(); err != nil {
 		return err
 	}
-	s.secs[entry.Version].Set(newSecurityFromEntry(entry))
+	s.secs[entry.Version].Set(NewSecurityFromEntry(entry))
 	return nil
 }
 
@@ -179,7 +179,7 @@ func (s *TrapServer) DeleteSecurity(entry *SecurityEntry) error {
 	if err := entry.validate(); err != nil {
 		return err
 	}
-	s.secs[entry.Version].Delete(newSecurityFromEntry(entry))
+	s.secs[entry.Version].Delete(NewSecurityFromEntry(entry))
 	return nil
 }
 
