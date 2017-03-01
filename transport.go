@@ -51,7 +51,7 @@ func (t *packetTransport) Read(conn interface{}, buf []byte) (num int, src net.A
 
 		pkt := make([]byte, num)
 		copy(pkt, buf)
-		msg, _, err = unmarshalMessage(pkt)
+		msg, _, err = UnmarshalMessage(pkt)
 		return
 	}
 }

@@ -141,7 +141,7 @@ func TestMessageProcessingV3Request(t *testing.T) {
 		t.Error("PrepareOutgoingMessage() - message id")
 	}
 	if !msgv3.Reportable() || !msgv3.Authentication() || !msgv3.Privacy() {
-		t.Error("PrepareOutgoingMessage() - security flag")
+		t.Error("PrepareOutgoingMessage() - Security flag")
 	}
 	msgv3.SetAuthentication(false)
 	msgv3.SetPrivacy(false)
@@ -166,7 +166,7 @@ func TestMessageProcessingV3Request(t *testing.T) {
 	rmsg.MessageId = messageId
 	_, err = mp.PrepareDataElements(sec, rmsg, msg)
 	if err == nil {
-		t.Error("PrepareDataElements() - security model check")
+		t.Error("PrepareDataElements() - Security model check")
 	}
 
 	pduBytes, _ := pdu.Marshal()

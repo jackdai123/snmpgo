@@ -7,8 +7,8 @@ import (
 )
 
 type snmpEngine struct {
-	mp  messageProcessing
-	sec security
+	mp  MessageProcessing
+	sec Security
 }
 
 func (e *snmpEngine) SendPdu(pdu Pdu, conn net.Conn, args *SNMPArguments) (result Pdu, err error) {
@@ -44,7 +44,7 @@ func (e *snmpEngine) SendPdu(pdu Pdu, conn net.Conn, args *SNMPArguments) (resul
 	}
 
 	var recvMsg message
-	if recvMsg, _, err = unmarshalMessage(buf); err != nil {
+	if recvMsg, _, err = UnmarshalMessage(buf); err != nil {
 		return nil, &MessageError{
 			Cause:   err,
 			Message: "Failed to Unmarshal message",
@@ -88,7 +88,7 @@ func (e *snmpEngine) String() string {
 
 func newSNMPEngine(args *SNMPArguments) *snmpEngine {
 	return &snmpEngine{
-		mp:  newMessageProcessing(args.Version),
+		mp:  NewMessageProcessing(args.Version),
 		sec: newSecurity(args),
 	}
 }

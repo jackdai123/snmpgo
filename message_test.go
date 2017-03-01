@@ -105,17 +105,17 @@ func TestUnmarshalMessageV1(t *testing.T) {
 
 	msg, rest, err := snmpgo.UnmarshalMessage(buf)
 	if err != nil {
-		t.Errorf("unmarshalMessage() : %v", err)
+		t.Errorf("UnmarshalMessage() : %v", err)
 	}
 	if !bytes.Equal(expRest, rest) {
-		t.Errorf("unmarshalMessage() - expected [%s], actual [%s]",
+		t.Errorf("UnmarshalMessage() - expected [%s], actual [%s]",
 			snmpgo.ToHexStr(expRest, " "), snmpgo.ToHexStr(buf, " "))
 	}
 	if msg == nil {
-		t.Errorf("unmarshalMessage() - message is nil")
+		t.Errorf("UnmarshalMessage() - message is nil")
 	}
 	if snmpgo.ToMessageV1 == nil {
-		t.Errorf("unmarshalMessage() - message is not messageV1")
+		t.Errorf("UnmarshalMessage() - message is not messageV1")
 	}
 }
 
@@ -133,17 +133,17 @@ func TestUnmarshalMessageV3(t *testing.T) {
 
 	msg, rest, err := snmpgo.UnmarshalMessage(buf)
 	if err != nil {
-		t.Errorf("unmarshalMessage() : %v", err)
+		t.Errorf("UnmarshalMessage() : %v", err)
 	}
 	if !bytes.Equal(expRest, rest) {
-		t.Errorf("unmarshalMessage() - expected [%s], actual [%s]",
+		t.Errorf("UnmarshalMessage() - expected [%s], actual [%s]",
 			snmpgo.ToHexStr(expRest, " "), snmpgo.ToHexStr(buf, " "))
 	}
 	if msg == nil {
-		t.Errorf("unmarshalMessage() - message is nil")
+		t.Errorf("UnmarshalMessage() - message is nil")
 	}
 	if snmpgo.ToMessageV3 == nil {
-		t.Errorf("unmarshalMessage() - message is not messageV3")
+		t.Errorf("UnmarshalMessage() - message is not messageV3")
 	}
 }
 
@@ -156,9 +156,9 @@ func TestInvalidUnmarshalMessage(t *testing.T) {
 
 	msg, _, err := snmpgo.UnmarshalMessage(buf)
 	if err == nil {
-		t.Error("unmarshalMessage() : error is nil")
+		t.Error("UnmarshalMessage() : error is nil")
 	}
 	if msg != nil {
-		t.Error("unmarshalMessage() - message is not nil")
+		t.Error("UnmarshalMessage() - message is not nil")
 	}
 }

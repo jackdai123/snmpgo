@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-type security interface {
+type Security interface {
 	Identifier() string
 	GenerateRequestMessage(message) error
 	GenerateResponseMessage(message) error
@@ -582,7 +582,7 @@ func passwordToKey(proto AuthProtocol, password string, engineId []byte) []byte 
 	return h.Sum(nil)
 }
 
-func newSecurity(args *SNMPArguments) security {
+func newSecurity(args *SNMPArguments) Security {
 	switch args.Version {
 	case V1, V2c:
 		return &community{
@@ -607,7 +607,7 @@ func newSecurity(args *SNMPArguments) security {
 	}
 }
 
-func newSecurityFromEntry(entry *SecurityEntry) security {
+func newSecurityFromEntry(entry *SecurityEntry) Security {
 	switch entry.Version {
 	case V1, V2c:
 		return &community{
@@ -637,18 +637,18 @@ func newSecurityFromEntry(entry *SecurityEntry) security {
 	}
 }
 
-type securityMap struct {
+type SecurityMap struct {
 	lock *sync.RWMutex
-	objs map[string]security
+	objs map[string]Security
 }
 
-func (m *securityMap) Set(sec security) {
+func (m *SecurityMap) Set(sec Security) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
 	m.objs[sec.Identifier()] = sec
 }
 
-func (m *securityMap) Lookup(msg message) security {
+func (m *SecurityMap) Lookup(msg message) Security {
 	var id string
 	switch mm := msg.(type) {
 	case *messageV1:
@@ -665,8 +665,8 @@ func (m *securityMap) Lookup(msg message) security {
 	return m.objs[id]
 }
 
-func (m *securityMap) List() []security {
-	ret := make([]security, 0, len(m.objs))
+func (m *SecurityMap) List() []Security {
+	ret := make([]Security, 0, len(m.objs))
 
 	m.lock.RLock()
 	defer m.lock.RUnlock()
@@ -676,15 +676,15 @@ func (m *securityMap) List() []security {
 	return ret
 }
 
-func (m *securityMap) Delete(sec security) {
+func (m *SecurityMap) Delete(sec Security) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
 	delete(m.objs, sec.Identifier())
 }
 
-func newSecurityMap() *securityMap {
-	return &securityMap{
+func NewSecurityMap() *SecurityMap {
+	return &SecurityMap{
 		lock: new(sync.RWMutex),
-		objs: map[string]security{},
+		objs: map[string]Security{},
 	}
 }

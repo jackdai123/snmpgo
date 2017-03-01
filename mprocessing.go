@@ -5,11 +5,11 @@ import (
 	"fmt"
 )
 
-type messageProcessing interface {
+type MessageProcessing interface {
 	Version() SNMPVersion
-	PrepareOutgoingMessage(security, Pdu, *SNMPArguments) (message, error)
-	PrepareResponseMessage(security, Pdu, message) (message, error)
-	PrepareDataElements(security, message, message) (Pdu, error)
+	PrepareOutgoingMessage(Security, Pdu, *SNMPArguments) (message, error)
+	PrepareResponseMessage(Security, Pdu, message) (message, error)
+	PrepareDataElements(Security, message, message) (Pdu, error)
 }
 
 type messageProcessingV1 struct {
@@ -21,7 +21,7 @@ func (mp *messageProcessingV1) Version() SNMPVersion {
 }
 
 func (mp *messageProcessingV1) PrepareOutgoingMessage(
-	sec security, pdu Pdu, args *SNMPArguments) (message, error) {
+	sec Security, pdu Pdu, args *SNMPArguments) (message, error) {
 
 	_, ok := pdu.(*PduV1)
 	if !ok {
@@ -40,7 +40,7 @@ func (mp *messageProcessingV1) PrepareOutgoingMessage(
 }
 
 func (mp *messageProcessingV1) PrepareResponseMessage(
-	sec security, pdu Pdu, recvMsg message) (message, error) {
+	sec Security, pdu Pdu, recvMsg message) (message, error) {
 
 	_, ok := pdu.(*PduV1)
 	if !ok {
@@ -59,7 +59,7 @@ func (mp *messageProcessingV1) PrepareResponseMessage(
 }
 
 func (mp *messageProcessingV1) PrepareDataElements(
-	sec security, recvMsg, sendMsg message) (Pdu, error) {
+	sec Security, recvMsg, sendMsg message) (Pdu, error) {
 
 	if sendMsg != nil && sendMsg.Version() != recvMsg.Version() {
 		return nil, &MessageError{
@@ -109,7 +109,7 @@ func (mp *messageProcessingV3) Version() SNMPVersion {
 }
 
 func (mp *messageProcessingV3) PrepareOutgoingMessage(
-	sec security, pdu Pdu, args *SNMPArguments) (message, error) {
+	sec Security, pdu Pdu, args *SNMPArguments) (message, error) {
 
 	p, ok := pdu.(*ScopedPdu)
 	if !ok {
@@ -152,14 +152,14 @@ func (mp *messageProcessingV3) PrepareOutgoingMessage(
 }
 
 func (mp *messageProcessingV3) PrepareResponseMessage(
-	sec security, pdu Pdu, recvMsg message) (message, error) {
+	sec Security, pdu Pdu, recvMsg message) (message, error) {
 
 	// TODO support for response message of v3
 	return nil, nil
 }
 
 func (mp *messageProcessingV3) PrepareDataElements(
-	sec security, recvMsg, sendMsg message) (Pdu, error) {
+	sec Security, recvMsg, sendMsg message) (Pdu, error) {
 
 	sm, _ := sendMsg.(*messageV3)
 	rm := recvMsg.(*messageV3)
@@ -245,7 +245,7 @@ func (mp *messageProcessingV3) PrepareDataElements(
 	return pdu, nil
 }
 
-func newMessageProcessing(ver SNMPVersion) (mp messageProcessing) {
+func NewMessageProcessing(ver SNMPVersion) (mp MessageProcessing) {
 	switch ver {
 	case V1, V2c:
 		mp = &messageProcessingV1{version: ver}

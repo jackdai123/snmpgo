@@ -157,8 +157,8 @@ type TrapRequest struct {
 // trap messages.
 type TrapServer struct {
 	args      *ServerArguments
-	mps       map[SNMPVersion]messageProcessing
-	secs      map[SNMPVersion]*securityMap
+	mps       map[SNMPVersion]MessageProcessing
+	secs      map[SNMPVersion]*SecurityMap
 	transport transport
 	servingMu sync.RWMutex
 	serving   bool
@@ -254,8 +254,8 @@ func (s *TrapServer) handle(listener TrapListener, conn interface{}, msg message
 	}()
 
 	var pdu Pdu
-	var mp messageProcessing
-	var sec security
+	var mp MessageProcessing
+	var sec Security
 	if msg != nil {
 		var ok bool
 		v := msg.Version()
@@ -298,7 +298,7 @@ func (s *TrapServer) handle(listener TrapListener, conn interface{}, msg message
 }
 
 func (s *TrapServer) informResponse(
-	conn interface{}, src net.Addr, mp messageProcessing, sec security, msg message) error {
+	conn interface{}, src net.Addr, mp MessageProcessing, sec Security, msg message) error {
 
 	respPdu := NewPduWithVarBinds(msg.Version(), GetResponse, msg.Pdu().VarBinds())
 	respMsg, err := mp.PrepareResponseMessage(sec, respPdu, msg)
@@ -329,13 +329,13 @@ func NewTrapServer(args ServerArguments) (*TrapServer, error) {
 
 	return &TrapServer{
 		args: &args,
-		mps: map[SNMPVersion]messageProcessing{
-			V2c: newMessageProcessing(V2c),
-			V3:  newMessageProcessing(V3),
+		mps: map[SNMPVersion]MessageProcessing{
+			V2c: NewMessageProcessing(V2c),
+			V3:  NewMessageProcessing(V3),
 		},
-		secs: map[SNMPVersion]*securityMap{
-			V2c: newSecurityMap(),
-			V3:  newSecurityMap(),
+		secs: map[SNMPVersion]*SecurityMap{
+			V2c: NewSecurityMap(),
+			V3:  NewSecurityMap(),
 		},
 		transport: newTransport(&args),
 	}, nil

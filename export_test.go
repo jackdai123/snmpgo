@@ -23,22 +23,22 @@ func CheckPdu(engine *snmpEngine, pdu Pdu, args *SNMPArguments) error {
 
 // For message testing
 var NewMessage = newMessage
-var UnmarshalMessage = unmarshalMessage
+var UnmarshalMessage = UnmarshalMessage
 var NewMessageWithPdu = newMessageWithPdu
-var NewMessageProcessing = newMessageProcessing
+var NewMessageProcessing = NewMessageProcessing
 
 func ToMessageV1(msg message) *messageV1 { return msg.(*messageV1) }
 func ToMessageV3(msg message) *messageV3 { return msg.(*messageV3) }
-func ToUsm(sec security) *usm            { return sec.(*usm) }
+func ToUsm(sec Security) *usm            { return sec.(*usm) }
 
-// For security testing
+// For Security testing
 var NewSecurity = newSecurity
 var PasswordToKey = passwordToKey
 var EncryptDES = encryptDES
 var EncryptAES = encryptAES
 var DecryptDES = decryptDES
 var DecryptAES = decryptAES
-var NewSecurityMap = newSecurityMap
+var NewSecurityMap = NewSecurityMap
 
 func NewCommunity() *community { return &community{} }
 func NewUsm() *usm             { return &usm{} }
