@@ -31,7 +31,7 @@ func (mp *messageProcessingV1) PrepareOutgoingMessage(
 		}
 	}
 	pdu.SetRequestId(genRequestId())
-	msg := newMessageWithPdu(mp.Version(), pdu)
+	msg := NewMessageWithPdu(mp.Version(), pdu)
 
 	if err := sec.GenerateRequestMessage(msg); err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (mp *messageProcessingV1) PrepareResponseMessage(
 		}
 	}
 	pdu.SetRequestId(recvMsg.Pdu().RequestId())
-	msg := newMessageWithPdu(mp.Version(), pdu)
+	msg := NewMessageWithPdu(mp.Version(), pdu)
 
 	if err := sec.GenerateResponseMessage(msg); err != nil {
 		return nil, err
@@ -128,7 +128,7 @@ func (mp *messageProcessingV3) PrepareOutgoingMessage(
 		p.ContextName = []byte(args.ContextName)
 	}
 
-	msg := newMessageWithPdu(mp.Version(), pdu)
+	msg := NewMessageWithPdu(mp.Version(), pdu)
 	m := msg.(*messageV3)
 	m.MessageId = genMessageId()
 	m.MessageMaxSize = args.MessageMaxSize

@@ -22,9 +22,9 @@ func CheckPdu(engine *snmpEngine, pdu Pdu, args *SNMPArguments) error {
 }
 
 // For message testing
-var NewMessage = newMessage
+var NewMessage = NewMessage
 var UnmarshalMessage = UnmarshalMessage
-var NewMessageWithPdu = newMessageWithPdu
+var NewMessageWithPdu = NewMessageWithPdu
 var NewMessageProcessing = NewMessageProcessing
 
 func ToMessageV1(msg Message) *messageV1 { return msg.(*messageV1) }

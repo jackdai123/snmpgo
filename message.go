@@ -296,17 +296,17 @@ func (msg *messageV3) String() string {
 		msg.pdu.String())
 }
 
-func newMessage(ver SNMPVersion) (msg Message) {
+func NewMessage(ver SNMPVersion) (msg Message) {
 	switch ver {
 	case V1, V2c:
-		msg = newMessageWithPdu(ver, &PduV1{})
+		msg = NewMessageWithPdu(ver, &PduV1{})
 	case V3:
-		msg = newMessageWithPdu(ver, &ScopedPdu{})
+		msg = NewMessageWithPdu(ver, &ScopedPdu{})
 	}
 	return
 }
 
-func newMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg Message) {
+func NewMessageWithPdu(ver SNMPVersion, pdu Pdu) (msg Message) {
 	m := messageV1{
 		version: ver,
 		pdu:     pdu,
@@ -329,7 +329,7 @@ func UnmarshalMessage(b []byte) (Message, []byte, error) {
 		return nil, nil, err
 	}
 
-	msg := newMessage(ver)
+	msg := NewMessage(ver)
 	switch m := msg.(type) {
 	case *messageV1:
 		err = m.unmarshalInner(next)
